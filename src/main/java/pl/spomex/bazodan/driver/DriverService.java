@@ -26,7 +26,7 @@ public class DriverService {
         drivers.add(driver);
     }
 
-    public void update(String id, Driver driver) {
+    public void updateDriver(String id, Driver driver) {
         for (int i = 0; i < drivers.size(); i++) {
             Driver d = drivers.get(i);
             if (d.getId().equals(id)) {
@@ -34,5 +34,9 @@ public class DriverService {
                 return;
             }
         }
+    }
+
+    public void deleteDriver(String id) {
+        drivers.removeIf(t -> t.getId().equals(id));
     }
 }
