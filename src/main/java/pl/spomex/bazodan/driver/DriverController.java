@@ -1,9 +1,7 @@
 package pl.spomex.bazodan.driver;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +19,15 @@ public class DriverController {
     @RequestMapping("/drivers/{id}")
     public Driver getDriver(@PathVariable  String id) {
         return driverService.getDriver(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/drivers")
+    public void addDriver(@RequestBody Driver driver){
+        driverService.addDriver(driver);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/drivers/{id}")
+    public void updateDriver(@RequestBody Driver driver, @PathVariable  String id){
+        driverService.update(id, driver);
     }
 }
