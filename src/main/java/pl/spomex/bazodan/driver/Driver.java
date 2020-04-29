@@ -1,9 +1,19 @@
 package pl.spomex.bazodan.driver;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Driver {
+
+    @Id
     private String id;
     private String name;
     private String surname;
+
+    public Driver(){
+
+    }
 
     public Driver(String id, String name, String surname) {
         this.id = id;

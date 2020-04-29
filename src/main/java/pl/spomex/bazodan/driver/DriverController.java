@@ -28,7 +28,7 @@ public class DriverController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/drivers/{id}")
     public void updateDriver(@RequestBody Driver driver, @PathVariable String id) {
-        driverService.updateDriver(id, driver);
+        driverService.updateDriver(driver);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/drivers/{id}")

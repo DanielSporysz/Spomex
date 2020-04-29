@@ -1,5 +1,6 @@
 package pl.spomex.bazodan.driver;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,35 +9,35 @@ import java.util.List;
 
 @Service
 public class DriverService {
-    private List<Driver> drivers = new ArrayList<>(Arrays.asList(
-            new Driver("0", "Daniel", "Sporysz"),
-            new Driver("1", "Daniel2", "Sporysz2"),
-            new Driver("2", "Daniel3", "Sporysz3")
-    ));
+
+    @Autowired
+    private DriverRepository driverRepository;
+
+//    private List<Driver> drivers = new ArrayList<>(Arrays.asList(
+//            new Driver("0", "Daniel", "Sporysz"),
+//            new Driver("1", "Daniel2", "Sporysz2"),
+//            new Driver("2", "Daniel3", "Sporysz3")
+//    ));
 
     public List<Driver> getAllDrivers() {
+        List<Driver> drivers = new ArrayList<>();
+        driverRepository.findAll().forEach(drivers::add);
         return drivers;
     }
 
     public Driver getDriver(String id) {
-        return drivers.stream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
+        return driverRepository.findById(id).orElse(null);
     }
 
     public void addDriver(Driver driver) {
-        drivers.add(driver);
+        driverRepository.save(driver);
     }
 
-    public void updateDriver(String id, Driver driver) {
-        for (int i = 0; i < drivers.size(); i++) {
-            Driver d = drivers.get(i);
-            if (d.getId().equals(id)) {
-                drivers.set(i, driver);
-                return;
-            }
-        }
+    public void updateDriver(Driver driver) {
+        driverRepository.save(driver);
     }
 
     public void deleteDriver(String id) {
-        drivers.removeIf(t -> t.getId().equals(id));
+        driverRepository.deleteById(id);
     }
 }

@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Sat Apr 25 20:26:17 CEST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-b297-12c1-000007ec9098 
-on database directory memory:/home/daniel/Desktop/Spomex/testdb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
-Loaded from file:/home/daniel/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
-java.vendor=Amazon.com Inc.
-java.runtime.version=1.8.0_252-b09
-user.dir=/home/daniel/Desktop/Spomex
-os.name=Linux
+Wed Apr 29 12:12:55 CEST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-c56c-d133-000004532d90 
+on database directory memory:C:\Users\danie\Desktop\Spomex\testdb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/C:/Users/danie/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_231-b11
+user.dir=C:\Users\danie\Desktop\Spomex
+os.name=Windows 10
 os.arch=amd64
-os.version=5.4.0-26-generic
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
