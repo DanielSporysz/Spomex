@@ -1,7 +1,6 @@
 package pl.spomex.bazodan.shipment;
 
 import pl.spomex.bazodan.driver.Driver;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +8,9 @@ public class Shipment {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
+
     @ManyToOne
     private Driver driver;
 

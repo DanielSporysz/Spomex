@@ -1,15 +1,17 @@
 package pl.spomex.bazodan.driver;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Driver {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "surname")
     private String surname;
 
     public String getFirstName() {
