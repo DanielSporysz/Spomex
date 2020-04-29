@@ -1,6 +1,7 @@
 package pl.spomex.bazodan.driver;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Driver {
@@ -34,4 +35,5 @@ public class Driver {
     public void setId(Integer id) {
         this.id = id;
     }
+
 }
