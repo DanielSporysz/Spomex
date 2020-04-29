@@ -13,19 +13,13 @@ public class DriverService {
     @Autowired
     private DriverRepository driverRepository;
 
-//    private List<Driver> drivers = new ArrayList<>(Arrays.asList(
-//            new Driver("0", "Daniel", "Sporysz"),
-//            new Driver("1", "Daniel2", "Sporysz2"),
-//            new Driver("2", "Daniel3", "Sporysz3")
-//    ));
-
     public List<Driver> getAllDrivers() {
         List<Driver> drivers = new ArrayList<>();
         driverRepository.findAll().forEach(drivers::add);
         return drivers;
     }
 
-    public Driver getDriver(String id) {
+    public Driver getDriver(Integer id) {
         return driverRepository.findById(id).orElse(null);
     }
 
@@ -37,7 +31,7 @@ public class DriverService {
         driverRepository.save(driver);
     }
 
-    public void deleteDriver(String id) {
+    public void deleteDriver(Integer id) {
         driverRepository.deleteById(id);
     }
 }

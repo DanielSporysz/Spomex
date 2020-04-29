@@ -17,7 +17,7 @@ public class DriverController {
     }
 
     @RequestMapping("/drivers/{id}")
-    public Driver getDriver(@PathVariable String id) {
+    public Driver getDriver(@PathVariable Integer id) {
         return driverService.getDriver(id);
     }
 
@@ -27,12 +27,12 @@ public class DriverController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/drivers/{id}")
-    public void updateDriver(@RequestBody Driver driver, @PathVariable String id) {
+    public void updateDriver(@RequestBody Driver driver, @PathVariable Integer id) {
         driverService.updateDriver(driver);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/drivers/{id}")
-    public void deleteDriver(@PathVariable String id) {
+    public void deleteDriver(@PathVariable Integer id) {
         driverService.deleteDriver(id);
     }
 }

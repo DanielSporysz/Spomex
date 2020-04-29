@@ -1,32 +1,22 @@
 package pl.spomex.bazodan.driver;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Driver {
 
     @Id
-    private String id;
-    private String name;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;
+    private String firstName;
     private String surname;
 
-    public Driver(){
-
+    public String getFirstName() {
+        return firstName;
     }
 
-    public Driver(String id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
     public String getSurname() {
@@ -37,11 +27,11 @@ public class Driver {
         this.surname = surname;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
