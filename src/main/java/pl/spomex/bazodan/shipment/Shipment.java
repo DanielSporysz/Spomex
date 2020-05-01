@@ -1,5 +1,6 @@
 package pl.spomex.bazodan.shipment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import pl.spomex.bazodan.driver.Driver;
 import pl.spomex.bazodan.product.Product;
 
@@ -16,14 +17,14 @@ public class Shipment {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name="direction")
+    private String direction;
+
     @ManyToOne
+    @JoinColumn(name="driver_id", referencedColumnName="id")
     private Driver driver;
 
-    @ManyToMany()
-    @JoinTable(
-            name = "shipment_product",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "shipment_id"))
+    @OneToMany(mappedBy = "shipment")
     private Set<Product> products = new HashSet<>();
 
     public Integer getId() {
@@ -32,6 +33,14 @@ public class Shipment {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public Driver getDriver() {

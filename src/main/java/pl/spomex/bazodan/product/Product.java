@@ -21,15 +21,16 @@ public class Product {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Shipment> shipments = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="shipment_id", referencedColumnName="id")
+    private Shipment shipment;
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getId() {
+        return id;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,11 +41,19 @@ public class Product {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Shipment getShipment() {
+        return shipment;
+    }
+
+    public void setShipment(Shipment shipment) {
+        this.shipment = shipment;
     }
 }
