@@ -1,7 +1,11 @@
 package pl.spomex.bazodan.driver;
 
+import javafx.scene.chart.ScatterChart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.spomex.bazodan.exception.BadRequest;
 
 import java.util.List;
 
@@ -11,28 +15,54 @@ public class DriverController {
     @Autowired
     private DriverService driverService;
 
-    @RequestMapping("/drivers")
-    public List<Driver> getAllDrivers() {
-        return driverService.getAllDrivers();
+    @GetMapping(value = "/drivers", produces = "application/json")
+    public ResponseEntity<Object> getAllDrivers() {
+        List<Driver> drivers = driverService.getAllDrivers();
+        return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
-    @RequestMapping("/drivers/{id}")
-    public Driver getDriver(@PathVariable Integer id) {
-        return driverService.getDriver(id);
+    @GetMapping(value = "/drivers/{id}", produces = "application/json")
+    public ResponseEntity<Object> getDriver(@PathVariable Integer id) {
+        Driver driver = driverService.getDriver(id);
+        if (driver != null) {
+            return new ResponseEntity<>(driver, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Driver not found", HttpStatus.NOT_FOUND);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/drivers")
-    public void addDriver(@RequestBody Driver driver) {
-        driverService.addDriver(driver);
+    @PostMapping(value = "/drivers", produces = "text/plain")
+    public ResponseEntity<Object> addDriver(@RequestBody Driver driver) {
+        try {
+            Driver savedDriver = driverService.addDriver(driver);
+            return new ResponseEntity<>(
+                    "Driver created (ID=" + savedDriver.getId() + ")",
+                    HttpStatus.CREATED);
+        } catch (BadRequest e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/drivers/{id}")
-    public void updateDriver(@RequestBody Driver driver, @PathVariable Integer id) {
-        driverService.updateDriver(driver);
+    @PutMapping(value = "/drivers/{id}", produces = "text/plain")
+    public ResponseEntity<Object> updateDriver(@RequestBody Driver driver, @PathVariable Integer id) {
+        try {
+            //TODO checking if the driver even exists
+            Driver updatedDriver = driverService.updateDriver(driver, id);
+            return new ResponseEntity<>(
+                    "Driver updated (ID=" + updatedDriver.getId() + ")",
+                    HttpStatus.OK);
+        } catch (BadRequest e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/drivers/{id}")
-    public void deleteDriver(@PathVariable Integer id) {
-        driverService.deleteDriver(id);
-    }
+    // TODO remove completely or implement request validation for driver deletion
+//    @RequestMapping(method = RequestMethod.DELETE, value = "/drivers/{id}")
+//    public void deleteDriver(@PathVariable Integer id) {
+//        driverService.deleteDriver(id);
+//    }
 }

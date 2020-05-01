@@ -11,28 +11,29 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(method = RequestMethod.GET, value ="/products")
+    @GetMapping(value = "/products", produces = "application/json")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/products/{id}")
+    @GetMapping(value = "/products/{id}", produces = "application/json")
     public Product getProduct(@PathVariable Integer id) {
         return productService.getProduct(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/products")
-    public void addProduct(@RequestBody Product product) {
-        productService.addProduct(product);
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/products/{id}")
-    public void updateProduct(@RequestBody Product product, @PathVariable Integer id) {
-        productService.updateProduct(product);
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "/products/{id}")
-    public void deleteProduct(@PathVariable Integer id) {
-        productService.deleteProduct(id);
-    }
+    // TODO remove completely or implement requests validation for product post, put and delete
+//    @PostMapping(value = "/products", produces = "application/json")
+//    public void addProduct(@RequestBody Product product) {
+//        productService.addProduct(product);
+//    }
+//
+//    @PutMapping(value = "/products/{id}", produces = "application/json")
+//    public void updateProduct(@RequestBody Product product, @PathVariable Integer id) {
+//        productService.updateProduct(product);
+//    }
+//
+//    @DeleteMapping(value = "/products/{id}", produces = "application/json")
+//    public void deleteProduct(@PathVariable Integer id) {
+//        productService.deleteProduct(id);
+//    }
 }
