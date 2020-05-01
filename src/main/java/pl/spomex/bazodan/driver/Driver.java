@@ -1,8 +1,11 @@
 package pl.spomex.bazodan.driver;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "driver")
 public class Driver {
 
     @Id

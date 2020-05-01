@@ -7,16 +7,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "product")
 public class Product {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "quantity")
     private Integer quantity;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Shipment> shipments = new HashSet<>();
 
     public Integer getQuantity() {
         return quantity;
