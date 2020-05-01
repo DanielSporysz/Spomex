@@ -1,6 +1,7 @@
 package pl.spomex.bazodan.shipment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.spomex.bazodan.driver.Driver;
 import pl.spomex.bazodan.product.Product;
 
@@ -25,6 +26,7 @@ public class Shipment {
     private Driver driver;
 
     @OneToMany(mappedBy = "shipment")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Product> products = new HashSet<>();
 
     public Integer getId() {
