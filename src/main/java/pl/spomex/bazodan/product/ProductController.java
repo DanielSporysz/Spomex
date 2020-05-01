@@ -1,6 +1,8 @@
 package pl.spomex.bazodan.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,13 +14,19 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping(value = "/products", produces = "application/json")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<Object> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping(value = "/products/{id}", produces = "application/json")
-    public Product getProduct(@PathVariable Integer id) {
-        return productService.getProduct(id);
+    public ResponseEntity<Object> getProduct(@PathVariable Integer id) {
+        Product product = productService.getProduct(id);
+        if (product != null) {
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     // TODO remove completely or implement requests validation for product post, put and delete
