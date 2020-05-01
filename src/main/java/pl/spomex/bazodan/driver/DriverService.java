@@ -30,10 +30,10 @@ public class DriverService {
     }
 
     public Driver updateDriver(Driver driver, Integer id) throws BadRequest {
+        validateDriver(driver);
         if (driver.getId()==null || !driver.getId().equals(id)){
             throw new BadRequest("ID in payload does not match the URL");
         }
-        validateDriver(driver);
         return driverRepository.save(driver);
     }
 
@@ -44,7 +44,8 @@ public class DriverService {
     private void validateDriver(Driver driver) throws BadRequest {
         if (driver.getFirstName() == null || driver.getFirstName().isEmpty()) {
             throw new BadRequest("Missing \"firstName\".");
-        } else if (driver.getSurname() == null || driver.getSurname().isEmpty()) {
+        }
+        if (driver.getSurname() == null || driver.getSurname().isEmpty()) {
             throw new BadRequest("Missing \"surname\".");
         }
     }
