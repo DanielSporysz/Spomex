@@ -26,7 +26,6 @@ public class Shipment {
     private Driver driver;
 
     @OneToMany(mappedBy = "shipment")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Product> products = new HashSet<>();
 
     public Integer getId() {

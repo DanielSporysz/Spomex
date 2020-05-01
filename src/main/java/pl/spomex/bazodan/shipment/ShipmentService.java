@@ -70,6 +70,7 @@ public class ShipmentService {
         if (shipment != null) {
             for (Product product : shipment.getProducts()) {
                 product.setShipment(shipment);
+                product.setDirection(shipment.getDirection());
                 productRepository.save(product);
             }
         }
