@@ -19,4 +19,10 @@ public class StatisticsController {
         Map<String, Integer> stock = statisticsService.getStock();
         return new ResponseEntity<>(stock, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/popularity", produces = "application/json")
+    public ResponseEntity<Object> getPopularity() {
+        Map<String, Integer> stock = statisticsService.getProductPopularity();
+        return new ResponseEntity<>(stock, HttpStatus.OK);
+    }
 }

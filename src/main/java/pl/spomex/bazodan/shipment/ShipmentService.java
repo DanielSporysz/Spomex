@@ -38,6 +38,10 @@ public class ShipmentService {
         return shipmentRepository.findById(id).orElse(null);
     }
 
+    public List<Shipment> getShipmentsByDirection(String direction){
+        return shipmentRepository.findByDirection(direction);
+    }
+
     public Shipment addShipment(Shipment shipment) throws BadRequest {
         validateShipment(shipment);
 

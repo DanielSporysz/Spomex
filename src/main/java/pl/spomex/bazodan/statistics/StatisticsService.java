@@ -49,4 +49,25 @@ public class StatisticsService {
 
         return stock;
     }
+
+    public Map<String, Integer> getProductPopularity() {
+        Map<String, Integer> popularity = new HashMap<>();
+
+        for (Shipment shipment : shipmentService.getShipmentsByDirection("out")) {
+            for (Product product : shipment.getProducts()) {
+                if (!product.getDirection().equals("out")) {
+                    continue;
+                }
+
+                if (popularity.get(product.getName()) == null) {
+                    popularity.put(product.getName(), product.getQuantity());
+                } else {
+                    Integer value = popularity.get(product.getName()) + product.getQuantity();
+                    popularity.put(product.getName(), value);
+                }
+            }
+        }
+
+        return popularity;
+    }
 }
