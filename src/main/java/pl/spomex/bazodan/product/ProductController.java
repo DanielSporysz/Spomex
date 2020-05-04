@@ -30,20 +30,4 @@ public class ProductController {
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
     }
-
-    // TODO remove completely or implement requests validation for product post, put and delete
-//    @PostMapping(value = "/products", produces = "application/json")
-//    public void addProduct(@RequestBody Product product) {
-//        productService.addProduct(product);
-//    }
-//
-//    @PutMapping(value = "/products/{id}", produces = "application/json")
-//    public void updateProduct(@RequestBody Product product, @PathVariable Integer id) {
-//        productService.updateProduct(product);
-//    }
-//
-//    @DeleteMapping(value = "/products/{id}", produces = "application/json")
-//    public void deleteProduct(@PathVariable Integer id) {
-//        productService.deleteProduct(id);
-//    }
 }
