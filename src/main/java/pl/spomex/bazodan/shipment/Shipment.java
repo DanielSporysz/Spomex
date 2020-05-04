@@ -1,10 +1,13 @@
 package pl.spomex.bazodan.shipment;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import pl.spomex.bazodan.driver.Driver;
 import pl.spomex.bazodan.product.Product;
 import pl.spomex.bazodan.truck.Truck;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +19,10 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
+    @Column(name = "date")
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="Europe/Warsaw")
+    private LocalDate date;
 
     @Column(name = "direction")
     private String direction;
@@ -75,5 +82,13 @@ public class Shipment {
 
     public void setTruck(Truck truck) {
         this.truck = truck;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
