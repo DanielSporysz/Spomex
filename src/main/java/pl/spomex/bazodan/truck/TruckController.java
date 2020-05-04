@@ -44,4 +44,18 @@ public class TruckController {
         }
     }
 
+    @PutMapping(value = "/trucks/{id}", produces = "text/plain")
+    public ResponseEntity<Object> updateTruck(@RequestBody Truck truck, @PathVariable Integer id) {
+        try {
+            Truck updatedTruck = truckService.updateTruck(truck, id);
+            return new ResponseEntity<>(
+                    "Truck updated (ID=" + updatedTruck.getId() + ")",
+                    HttpStatus.OK);
+        } catch (BadRequest e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

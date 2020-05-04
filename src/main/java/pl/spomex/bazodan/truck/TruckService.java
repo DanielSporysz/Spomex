@@ -36,7 +36,15 @@ public class TruckService {
         return truckRepository.save(truck);
     }
 
+    public void deleteTruck(Integer id) {
+        truckRepository.deleteById(id);
+    }
+
     private void validateTruck(Truck truck) throws BadRequest {
+        if (truck == null) {
+            throw new BadRequest("Cannot construct Truck with given information");
+        }
+
         if (truck.getCapacity() == null || truck.getCapacity() <= 0) {
             throw new BadRequest("Missing or bad value in \"load\".");
         }
