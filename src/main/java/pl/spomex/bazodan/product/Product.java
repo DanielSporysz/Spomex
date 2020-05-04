@@ -4,15 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.spomex.bazodan.shipment.Shipment;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "product")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -26,7 +24,7 @@ public class Product {
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name="shipment_id", referencedColumnName="id")
+    @JoinColumn(name = "shipment_id", referencedColumnName = "id")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Shipment shipment;
 

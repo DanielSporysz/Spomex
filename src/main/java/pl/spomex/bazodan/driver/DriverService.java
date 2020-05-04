@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.spomex.bazodan.exception.BadRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,7 +30,7 @@ public class DriverService {
 
     public Driver updateDriver(Driver driver, Integer id) throws BadRequest {
         validateDriver(driver);
-        if (driver.getId()==null || !driver.getId().equals(id)){
+        if (driver.getId() == null || !driver.getId().equals(id)) {
             throw new BadRequest("ID in payload does not match the URL");
         }
         return driverRepository.save(driver);

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.spomex.bazodan.driver.Driver;
 import pl.spomex.bazodan.exception.BadRequest;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class ShipmentController {
     @Autowired
     private ShipmentService shipmentService;
 
-    @GetMapping(value ="/shipments", produces = "application/json")
+    @GetMapping(value = "/shipments", produces = "application/json")
     public ResponseEntity<Object> getAllShipment() {
         List<Shipment> shipments = shipmentService.getAllShipments();
         return new ResponseEntity<>(shipments, HttpStatus.OK);
@@ -37,7 +36,7 @@ public class ShipmentController {
             return new ResponseEntity<>(
                     "Shipment created (ID=" + savedShipment.getId() + ")",
                     HttpStatus.CREATED);
-        } catch (BadRequest e){
+        } catch (BadRequest e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,22 +48,22 @@ public class ShipmentController {
         try {
             Shipment updatedShipment = shipmentService.updateShipment(shipment, id);
             return new ResponseEntity<>(
-                    "Shipment updated (ID=" + id + ")",
+                    "Shipment updated (ID=" + updatedShipment.getId() + ")",
                     HttpStatus.CREATED);
-        } catch (BadRequest e){
+        } catch (BadRequest e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping( value = "/shipments/{id}", produces = "text/plain")
+    @DeleteMapping(value = "/shipments/{id}", produces = "text/plain")
     public ResponseEntity<Object> deleteShipment(@PathVariable Integer id) {
         Integer result = shipmentService.deleteShipment(id);
-        if(result.equals(id)){
-            return new ResponseEntity<>("Shipment has been deleted (ID="+id+")", HttpStatus.OK);
+        if (result.equals(id)) {
+            return new ResponseEntity<>("Shipment has been deleted (ID=" + id + ")", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("There's no such shipment (ID="+id+")", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("There's no such shipment (ID=" + id + ")", HttpStatus.NOT_FOUND);
         }
     }
 }

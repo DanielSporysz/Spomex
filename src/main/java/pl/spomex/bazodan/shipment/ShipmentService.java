@@ -7,6 +7,8 @@ import pl.spomex.bazodan.driver.DriverRepository;
 import pl.spomex.bazodan.exception.BadRequest;
 import pl.spomex.bazodan.product.Product;
 import pl.spomex.bazodan.product.ProductRepository;
+import pl.spomex.bazodan.truck.Truck;
+import pl.spomex.bazodan.truck.TruckRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,9 @@ public class ShipmentService {
 
     @Autowired
     private DriverRepository driverRepository;
+
+    @Autowired
+    private TruckRepository truckRepository;
 
     public List<Shipment> getAllShipments() {
         List<Shipment> shipments = new ArrayList<>();
@@ -61,9 +66,9 @@ public class ShipmentService {
             shipmentRepository.deleteById(id);
 
             return id;
+        } else {
+            return null;
         }
-
-        return null;
     }
 
     private void saveShipmentProducts(Shipment shipment) {
@@ -94,6 +99,17 @@ public class ShipmentService {
                     .orElse(null);
             if (targetDriver == null) {
                 throw new BadRequest("There's no such driver (ID=" + shipment.getDriver().getId() + ")");
+            }
+        }
+        // validate truck
+        if (shipment.getTruck() == null || shipment.getTruck().getId() == null) {
+            throw new BadRequest("Missing \"truck\".");
+        } else {
+            Truck targetTruck = truckRepository
+                    .findById(shipment.getTruck().getId())
+                    .orElse(null);
+            if (targetTruck == null) {
+                throw new BadRequest("There's no such truck (ID=" + shipment.getTruck().getId() + ")");
             }
         }
     }

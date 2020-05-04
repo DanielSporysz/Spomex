@@ -1,6 +1,5 @@
 package pl.spomex.bazodan.driver;
 
-import javafx.scene.chart.ScatterChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,7 @@ public class DriverController {
             return new ResponseEntity<>(
                     "Driver created (ID=" + savedDriver.getId() + ")",
                     HttpStatus.CREATED);
-        } catch (BadRequest e){
+        } catch (BadRequest e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,7 +52,7 @@ public class DriverController {
             return new ResponseEntity<>(
                     "Driver updated (ID=" + updatedDriver.getId() + ")",
                     HttpStatus.OK);
-        } catch (BadRequest e){
+        } catch (BadRequest e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);

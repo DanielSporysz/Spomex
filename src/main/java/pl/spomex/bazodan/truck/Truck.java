@@ -1,4 +1,4 @@
-package pl.spomex.bazodan.driver;
+package pl.spomex.bazodan.truck;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import pl.spomex.bazodan.shipment.Shipment;
@@ -8,21 +8,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "driver")
-public class Driver {
+@Table(name = "truck")
+public class Truck {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "capacity")
+    private Integer capacity;
 
-    @Column(name = "surname")
-    private String surname;
-
-    @OneToMany(mappedBy = "driver")
+    @OneToMany(mappedBy = "truck")
     @JsonIgnore
     private Set<Shipment> shipments = new HashSet<>();
 
@@ -34,27 +31,19 @@ public class Driver {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public Set<Shipment> getShipments() {
         return shipments;
     }
 
     public void setShipments(Set<Shipment> shipments) {
         this.shipments = shipments;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 }

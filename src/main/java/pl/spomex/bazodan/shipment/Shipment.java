@@ -1,9 +1,8 @@
 package pl.spomex.bazodan.shipment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.spomex.bazodan.driver.Driver;
 import pl.spomex.bazodan.product.Product;
+import pl.spomex.bazodan.truck.Truck;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,16 +13,20 @@ import java.util.Set;
 public class Shipment {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name="direction")
+    @Column(name = "direction")
     private String direction;
 
     @ManyToOne
-    @JoinColumn(name="driver_id", referencedColumnName="id")
+    @JoinColumn(name = "driver_id", referencedColumnName = "id")
     private Driver driver;
+
+    @ManyToOne
+    @JoinColumn(name = "truck_id", referencedColumnName = "id")
+    private Truck truck;
 
     @OneToMany(mappedBy = "shipment")
     private Set<Product> products = new HashSet<>();
@@ -58,5 +61,13 @@ public class Shipment {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public Truck getTruck() {
+        return truck;
+    }
+
+    public void setTruck(Truck truck) {
+        this.truck = truck;
     }
 }
