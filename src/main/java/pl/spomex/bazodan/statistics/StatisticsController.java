@@ -29,7 +29,7 @@ public class StatisticsController {
 
     @GetMapping(value = "/performance/drivers", produces = "application/json")
     public ResponseEntity<Object> getDriversPerformance() {
-        List<Map<String, String>> performance = statisticsService.getDriversPerformance();
+        List<Map<String, String>> performance = statisticsService.getDrivers30DaysPerformance();
         return new ResponseEntity<>(performance, HttpStatus.OK);
     }
 }

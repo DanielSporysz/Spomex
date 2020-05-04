@@ -10,6 +10,8 @@ import pl.spomex.bazodan.shipment.Shipment;
 import pl.spomex.bazodan.shipment.ShipmentService;
 import pl.spomex.bazodan.truck.TruckService;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,20 +34,29 @@ public class StatisticsService {
 
         for (Shipment shipment : shipmentService.getAllShipments()) {
             for (Product product : shipment.getProducts()) {
+                if (product.getName() == null) {
+                    // Skip products with nulls
+                    continue;
+                }
+
                 if (stock.get(product.getName()) == null) {
                     stock.put(product.getName(), product.getQuantity());
                 } else {
-                    Integer value = stock.get(product.getName());
+                    Integer balance = stock.get(product.getName());
 
-                    if (product.getDirection().equals("in")) {
-                        value += product.getQuantity();
+                    if (product.getDirection() == null) {
+                        // Skip products with nulls
+                        continue;
+                    } else if (product.getDirection().equals("in")) {
+                        balance += product.getQuantity();
                     } else if (product.getDirection().equals("out")) {
-                        value -= product.getQuantity();
+                        balance -= product.getQuantity();
                     } else {
-                        throw new IllegalArgumentException("Unsupported value in Direction field");
+                        // Skip products with unsupported direction value
+                        continue;
                     }
 
-                    stock.put(product.getName(), value);
+                    stock.put(product.getName(), balance);
                 }
             }
         }
@@ -58,7 +69,7 @@ public class StatisticsService {
 
         for (Shipment shipment : shipmentService.getShipmentsByDirection("out")) {
             for (Product product : shipment.getProducts()) {
-                if (!product.getDirection().equals("out")) {
+                if (product.getDirection() == null || !product.getDirection().equals("out")) {
                     continue;
                 }
 
@@ -74,13 +85,18 @@ public class StatisticsService {
         return popularity;
     }
 
-    public List<Map<String, String>> getDriversPerformance() {
+    public List<Map<String, String>> getDrivers30DaysPerformance() {
         List<Map<String, String>> performances = new ArrayList<>();
+        LocalDate startingDate = LocalDate.now().minus(Period.ofDays(30));
 
         for (Driver driver : driverService.getAllDrivers()) {
             int shipmentCount = 0;
             int cumulativeProductCount = 0;
             for (Shipment shipment : driver.getShipments()) {
+                if (shipment.getDate() == null || shipment.getDate().isBefore(startingDate)) {
+                    continue;
+                }
+
                 shipmentCount++;
                 for (Product product : shipment.getProducts()) {
                     cumulativeProductCount += product.getQuantity();
