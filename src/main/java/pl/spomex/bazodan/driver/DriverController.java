@@ -47,7 +47,6 @@ public class DriverController {
     @PutMapping(value = "/drivers/{id}", produces = "text/plain")
     public ResponseEntity<Object> updateDriver(@RequestBody Driver driver, @PathVariable Integer id) {
         try {
-            //TODO checking if the driver even exists
             Driver updatedDriver = driverService.updateDriver(driver, id);
             return new ResponseEntity<>(
                     "Driver updated (ID=" + updatedDriver.getId() + ")",
@@ -58,10 +57,4 @@ public class DriverController {
             return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    // TODO remove completely or implement request validation for driver deletion
-//    @RequestMapping(method = RequestMethod.DELETE, value = "/drivers/{id}")
-//    public void deleteDriver(@PathVariable Integer id) {
-//        driverService.deleteDriver(id);
-//    }
 }

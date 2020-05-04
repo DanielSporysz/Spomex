@@ -41,9 +41,16 @@ public class DriverService {
     }
 
     private void validateDriver(Driver driver) throws BadRequest {
+        if (driver == null) {
+            throw new BadRequest("Cannot construct Driver with given information");
+        }
+
+        // validate name
         if (driver.getFirstName() == null || driver.getFirstName().isEmpty()) {
             throw new BadRequest("Missing \"firstName\".");
         }
+
+        // validate surname
         if (driver.getSurname() == null || driver.getSurname().isEmpty()) {
             throw new BadRequest("Missing \"surname\".");
         }
