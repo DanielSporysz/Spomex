@@ -31,6 +31,12 @@ public class Shipment {
     @OneToMany(mappedBy = "shipment")
     private Set<Product> products = new HashSet<>();
 
+    public static Shipment fromId(Integer id){
+        Shipment shipment = new Shipment();
+        shipment.setId(id);
+        return  shipment;
+    }
+
     public Integer getId() {
         return id;
     }

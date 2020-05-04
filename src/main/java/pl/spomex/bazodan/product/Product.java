@@ -1,6 +1,9 @@
 package pl.spomex.bazodan.product;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import pl.spomex.bazodan.shipment.Shipment;
 
 import javax.persistence.*;
@@ -25,7 +28,10 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "shipment_id", referencedColumnName = "id")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("shipmentId")
     private Shipment shipment;
 
     public Integer getId() {
@@ -58,6 +64,11 @@ public class Product {
 
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
+    }
+
+    @JsonProperty("shipmentId")
+    public void setShipment(Integer id){
+        shipment = Shipment.fromId(id);
     }
 
     public String getDirection() {
