@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,5 +25,11 @@ public class StatisticsController {
     public ResponseEntity<Object> getPopularity() {
         Map<String, Integer> stock = statisticsService.getProductPopularity();
         return new ResponseEntity<>(stock, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/performance/drivers", produces = "application/json")
+    public ResponseEntity<Object> getDriversPerformance() {
+        List<Map<String, String>> performance = statisticsService.getDriversPerformance();
+        return new ResponseEntity<>(performance, HttpStatus.OK);
     }
 }

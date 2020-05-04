@@ -2,6 +2,7 @@ package pl.spomex.bazodan.statistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.spomex.bazodan.driver.Driver;
 import pl.spomex.bazodan.driver.DriverService;
 import pl.spomex.bazodan.product.Product;
 import pl.spomex.bazodan.product.ProductService;
@@ -9,7 +10,9 @@ import pl.spomex.bazodan.shipment.Shipment;
 import pl.spomex.bazodan.shipment.ShipmentService;
 import pl.spomex.bazodan.truck.TruckService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -69,5 +72,32 @@ public class StatisticsService {
         }
 
         return popularity;
+    }
+
+    public List<Map<String, String>> getDriversPerformance() {
+        List<Map<String, String>> performances = new ArrayList<>();
+
+        for (Driver driver : driverService.getAllDrivers()) {
+            int shipmentCount = 0;
+            int cumulativeProductCount = 0;
+            for (Shipment shipment : driver.getShipments()) {
+                shipmentCount++;
+                for (Product product : shipment.getProducts()) {
+                    cumulativeProductCount += product.getQuantity();
+                }
+            }
+
+            //TODO better summary mapping ??
+            Map<String, String> summary = new HashMap<>();
+            summary.put("id", driver.getId().toString());
+            summary.put("firstName", driver.getFirstName());
+            summary.put("surname", driver.getSurname());
+            summary.put("shipmentCount", Integer.toString(shipmentCount));
+            summary.put("cumulativeProductCount", Integer.toString(cumulativeProductCount));
+
+            performances.add(summary);
+        }
+
+        return performances;
     }
 }
