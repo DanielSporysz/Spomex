@@ -40,7 +40,7 @@ public class DriverService {
         driverRepository.deleteById(id);
     }
 
-    private void validateDriver(Driver driver) throws BadRequest {
+    public void validateDriver(Driver driver) throws BadRequest {
         if (driver == null) {
             throw new BadRequest("Cannot construct Driver with given information");
         }

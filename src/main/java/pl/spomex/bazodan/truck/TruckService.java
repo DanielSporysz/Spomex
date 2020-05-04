@@ -40,7 +40,7 @@ public class TruckService {
         truckRepository.deleteById(id);
     }
 
-    private void validateTruck(Truck truck) throws BadRequest {
+    public void validateTruck(Truck truck) throws BadRequest {
         if (truck == null) {
             throw new BadRequest("Cannot construct Truck with given information");
         }

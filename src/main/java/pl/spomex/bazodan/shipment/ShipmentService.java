@@ -3,12 +3,12 @@ package pl.spomex.bazodan.shipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.spomex.bazodan.driver.Driver;
-import pl.spomex.bazodan.driver.DriverRepository;
+import pl.spomex.bazodan.driver.DriverService;
 import pl.spomex.bazodan.exception.BadRequest;
 import pl.spomex.bazodan.product.Product;
-import pl.spomex.bazodan.product.ProductRepository;
+import pl.spomex.bazodan.product.ProductService;
 import pl.spomex.bazodan.truck.Truck;
-import pl.spomex.bazodan.truck.TruckRepository;
+import pl.spomex.bazodan.truck.TruckService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +20,13 @@ public class ShipmentService {
     private ShipmentRepository shipmentRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Autowired
-    private DriverRepository driverRepository;
+    private DriverService driverService;
 
     @Autowired
-    private TruckRepository truckRepository;
+    private TruckService truckService;
 
     public List<Shipment> getAllShipments() {
         List<Shipment> shipments = new ArrayList<>();
@@ -62,7 +62,7 @@ public class ShipmentService {
     public Integer deleteShipment(Integer id) {
         Shipment shipment = shipmentRepository.findById(id).orElse(null);
         if (shipment != null) {
-            shipment.getProducts().forEach(t -> productRepository.delete(t));
+            shipment.getProducts().forEach(t -> productService.deleteProduct(t.getId()));
             shipmentRepository.deleteById(id);
 
             return id;
@@ -71,46 +71,45 @@ public class ShipmentService {
         }
     }
 
-    private void saveShipmentProducts(Shipment shipment) {
+    private void saveShipmentProducts(Shipment shipment) throws BadRequest {
         if (shipment != null) {
             for (Product product : shipment.getProducts()) {
                 product.setShipment(shipment);
                 product.setDirection(shipment.getDirection());
-                productRepository.save(product);
+                productService.addProduct(product);
             }
         }
     }
 
     private void validateShipment(Shipment shipment) throws BadRequest {
+        if (shipment == null) {
+            throw new BadRequest("Cannot construct Shipment with given information");
+        }
+
         // validate direction
         if (shipment.getDirection() == null || shipment.getDirection().isEmpty()) {
             throw new BadRequest("Missing \"direction\".");
-        } else {
-            if (!(shipment.getDirection().equals("in") || shipment.getDirection().equals("out"))) {
-                throw new BadRequest("Bad value in \"direction\". Expected \"in\" or \"out\"");
-            }
         }
+        if (!(shipment.getDirection().equals("in") || shipment.getDirection().equals("out"))) {
+            throw new BadRequest("Bad value in \"direction\". Expected \"in\" or \"out\".");
+        }
+
         // validate driver
-        if (shipment.getDriver() == null || shipment.getDriver().getId() == null) {
+        Driver shipmentDriver = shipment.getDriver();
+        if (shipmentDriver == null || shipmentDriver.getId() == null) {
             throw new BadRequest("Missing \"driver\".");
-        } else {
-            Driver targetDriver = driverRepository
-                    .findById(shipment.getDriver().getId())
-                    .orElse(null);
-            if (targetDriver == null) {
-                throw new BadRequest("There's no such driver (ID=" + shipment.getDriver().getId() + ")");
-            }
         }
+        if (driverService.getDriver(shipmentDriver.getId()) == null) {
+            throw new BadRequest("There's no such driver (ID=" + shipmentDriver.getId() + ").");
+        }
+
         // validate truck
-        if (shipment.getTruck() == null || shipment.getTruck().getId() == null) {
+        Truck shipmentTruck = shipment.getTruck();
+        if (shipmentTruck == null || shipmentTruck.getId() == null) {
             throw new BadRequest("Missing \"truck\".");
-        } else {
-            Truck targetTruck = truckRepository
-                    .findById(shipment.getTruck().getId())
-                    .orElse(null);
-            if (targetTruck == null) {
-                throw new BadRequest("There's no such truck (ID=" + shipment.getTruck().getId() + ")");
-            }
+        }
+        if (truckService.getTruck(shipmentTruck.getId()) == null) {
+            throw new BadRequest("There's no such truck (ID=" + shipmentTruck.getId() + ").");
         }
     }
 }

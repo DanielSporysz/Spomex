@@ -59,7 +59,7 @@ public class ProductService {
         if (product.getDirection() == null || product.getDirection().isEmpty()) {
             throw new BadRequest("Missing or bad value in \"direction\".");
         }
-        if (!product.getDirection().equals("in") || !product.getDirection().equals("out")) {
+        if (!(product.getDirection().equals("in") || product.getDirection().equals("out"))) {
             throw new BadRequest("Bad value in \"direction\". Expected \"in\" or \"out\".");
         }
 
