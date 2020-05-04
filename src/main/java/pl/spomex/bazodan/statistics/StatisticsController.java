@@ -32,4 +32,10 @@ public class StatisticsController {
         List<Map<String, String>> performance = statisticsService.getDrivers30DaysPerformance();
         return new ResponseEntity<>(performance, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/performance/trucks", produces = "application/json")
+    public ResponseEntity<Object> getTrucksPerformance() {
+        List<Map<String, String>> performance = statisticsService.getTrucks30DaysPerformance();
+        return new ResponseEntity<>(performance, HttpStatus.OK);
+    }
 }

@@ -8,14 +8,12 @@ import pl.spomex.bazodan.product.Product;
 import pl.spomex.bazodan.product.ProductService;
 import pl.spomex.bazodan.shipment.Shipment;
 import pl.spomex.bazodan.shipment.ShipmentService;
+import pl.spomex.bazodan.truck.Truck;
 import pl.spomex.bazodan.truck.TruckService;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StatisticsService {
@@ -90,30 +88,48 @@ public class StatisticsService {
         LocalDate startingDate = LocalDate.now().minus(Period.ofDays(30));
 
         for (Driver driver : driverService.getAllDrivers()) {
-            int shipmentCount = 0;
-            int cumulativeProductCount = 0;
-            for (Shipment shipment : driver.getShipments()) {
-                if (shipment.getDate() == null || shipment.getDate().isBefore(startingDate)) {
-                    continue;
-                }
-
-                shipmentCount++;
-                for (Product product : shipment.getProducts()) {
-                    cumulativeProductCount += product.getQuantity();
-                }
-            }
-
-            //TODO better summary mapping ??
             Map<String, String> summary = new HashMap<>();
             summary.put("id", driver.getId().toString());
             summary.put("firstName", driver.getFirstName());
             summary.put("surname", driver.getSurname());
-            summary.put("shipmentCount", Integer.toString(shipmentCount));
-            summary.put("cumulativeProductCount", Integer.toString(cumulativeProductCount));
+            countShipmentsAndProducts(summary, driver.getShipments(), startingDate);
 
             performances.add(summary);
         }
 
         return performances;
+    }
+
+    public List<Map<String, String>> getTrucks30DaysPerformance() {
+        List<Map<String, String>> performances = new ArrayList<>();
+        LocalDate startingDate = LocalDate.now().minus(Period.ofDays(30));
+
+        for (Truck truck : truckService.getAllTrucks()) {
+            Map<String, String> summary = new HashMap<>();
+            summary.put("id", truck.getId().toString());
+            countShipmentsAndProducts(summary, truck.getShipments(), startingDate);
+
+            performances.add(summary);
+        }
+
+        return performances;
+    }
+
+    private void countShipmentsAndProducts(Map<String, String> summary, Set<Shipment> shipments, LocalDate startingDate) {
+        int shipmentsCount = 0;
+        int productsCount = 0;
+        for (Shipment shipment : shipments) {
+            if (shipment.getDate() == null || shipment.getDate().isBefore(startingDate)) {
+                continue;
+            }
+
+            shipmentsCount++;
+            for (Product product : shipment.getProducts()) {
+                productsCount += product.getQuantity();
+            }
+        }
+
+        summary.put("shipmentsCount", Integer.toString(shipmentsCount));
+        summary.put("productsCount", Integer.toString(productsCount));
     }
 }
