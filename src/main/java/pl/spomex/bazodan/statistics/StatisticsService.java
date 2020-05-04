@@ -88,7 +88,7 @@ public class StatisticsService {
         LocalDate startingDate = LocalDate.now().minus(Period.ofDays(30));
 
         for (Driver driver : driverService.getAllDrivers()) {
-            Map<String, String> summary = new HashMap<>();
+            Map<String, String> summary = new LinkedHashMap<>();
             summary.put("id", driver.getId().toString());
             summary.put("firstName", driver.getFirstName());
             summary.put("surname", driver.getSurname());
@@ -105,7 +105,7 @@ public class StatisticsService {
         LocalDate startingDate = LocalDate.now().minus(Period.ofDays(30));
 
         for (Truck truck : truckService.getAllTrucks()) {
-            Map<String, String> summary = new HashMap<>();
+            Map<String, String> summary = new LinkedHashMap<>();
             summary.put("id", truck.getId().toString());
             countShipmentsAndProducts(summary, truck.getShipments(), startingDate);
 
@@ -116,6 +116,10 @@ public class StatisticsService {
     }
 
     private void countShipmentsAndProducts(Map<String, String> summary, Set<Shipment> shipments, LocalDate startingDate) {
+        if (summary == null || startingDate == null) {
+            throw new IllegalArgumentException("Summary and StartingDate cannot be null");
+        }
+
         int shipmentsCount = 0;
         int productsCount = 0;
         for (Shipment shipment : shipments) {
