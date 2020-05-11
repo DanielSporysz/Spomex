@@ -28,7 +28,6 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "shipment_id", referencedColumnName = "id")
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("shipmentId")
@@ -67,7 +66,7 @@ public class Product {
     }
 
     @JsonProperty("shipmentId")
-    public void setShipment(Integer id){
+    public void setShipment(Integer id) {
         shipment = Shipment.fromId(id);
     }
 

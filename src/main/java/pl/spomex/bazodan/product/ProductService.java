@@ -64,7 +64,7 @@ public class ProductService {
         }
 
         // validate shipment
-        if (product.getShipment() == null) {
+        if (product.getShipment() == null || product.getShipment().getId() == null) {
             throw new BadRequest("Missing \"shipment id\".");
         }
         Shipment shipmentTarget = shipmentService.getShipment(product.getShipment().getId());
