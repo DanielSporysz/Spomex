@@ -31,7 +31,7 @@ public class TruckService {
     public Truck updateTruck(Truck truck, Integer id) throws BadRequest {
         validateTruck(truck);
         if (truck.getId() == null || !truck.getId().equals(id)) {
-            throw new BadRequest("ID in payload does not match the URL");
+            throw new BadRequest("Truck: ID in payload does not match the URL");
         }
         return truckRepository.save(truck);
     }
@@ -42,11 +42,11 @@ public class TruckService {
 
     public void validateTruck(Truck truck) throws BadRequest {
         if (truck == null) {
-            throw new BadRequest("Cannot construct Truck with given information");
+            throw new BadRequest("Truck: Cannot construct Truck with given information");
         }
 
         if (truck.getCapacity() == null || truck.getCapacity() <= 0) {
-            throw new BadRequest("Missing or bad value in \"load\".");
+            throw new BadRequest("Truck: Missing or bad value in \"load\".");
         }
     }
 }

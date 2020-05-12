@@ -36,7 +36,7 @@ public class LicenseService {
     public License updateLicense(License license, Integer id) throws BadRequest {
         validateLicense(license);
         if (license.getId() == null || !license.getId().equals(id)) {
-            throw new BadRequest("ID in payload does not match the URL");
+            throw new BadRequest("License: ID in payload does not match the URL");
         }
         return licenseRepository.save(license);
     }
@@ -47,30 +47,30 @@ public class LicenseService {
 
     public void validateLicense(License license) throws BadRequest {
         if (license == null) {
-            throw new BadRequest("Cannot construct License with given information");
+            throw new BadRequest("License: Cannot construct License with given information");
         }
 
         // Validate dates
         if (license.getIssueDate() == null) {
-            throw new BadRequest("Missing \"issueDate\".");
+            throw new BadRequest("License: Missing \"issueDate\".");
         }
         if (license.getExpDate() == null) {
-            throw new BadRequest("Missing \"expDate\".");
+            throw new BadRequest("License: Missing \"expDate\".");
         }
         if (license.getExpDate().isBefore(license.getIssueDate())) {
-            throw new BadRequest("Incorrect \"expDate\" and \"issueDate\".");
+            throw new BadRequest("License: Incorrect \"expDate\" and \"issueDate\".");
         }
 
         // Validate truck
         if (license.getTruck() == null) {
-            throw new BadRequest("Missing \"truck\".");
+            throw new BadRequest("License: Missing \"truck\".");
         }
         if (license.getTruck().getId() == null) {
-            throw new BadRequest("Missing \"truck\" id.");
+            throw new BadRequest("License: Missing \"truck\" id.");
         }
         Truck targetTruck = truckService.getTruck(license.getTruck().getId());
         if (targetTruck == null) {
-            throw new BadRequest("There's no such \"truck\" (ID=" + license.getTruck().getId().toString() + ").");
+            throw new BadRequest("License: There's no such \"truck\" (ID=" + license.getTruck().getId().toString() + ").");
         }
         if (targetTruck.getLicense() != null && targetTruck.getLicense().getId() != null) {
             deleteLicense(targetTruck.getLicense().getId());

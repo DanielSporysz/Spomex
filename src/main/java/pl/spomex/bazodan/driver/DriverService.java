@@ -31,7 +31,7 @@ public class DriverService {
     public Driver updateDriver(Driver driver, Integer id) throws BadRequest {
         validateDriver(driver);
         if (driver.getId() == null || !driver.getId().equals(id)) {
-            throw new BadRequest("ID in payload does not match the URL");
+            throw new BadRequest("Driver: ID in payload does not match the URL");
         }
         return driverRepository.save(driver);
     }
@@ -42,17 +42,17 @@ public class DriverService {
 
     public void validateDriver(Driver driver) throws BadRequest {
         if (driver == null) {
-            throw new BadRequest("Cannot construct Driver with given information");
+            throw new BadRequest("Driver: Cannot construct Driver with given information");
         }
 
         // validate name
         if (driver.getFirstName() == null || driver.getFirstName().isEmpty()) {
-            throw new BadRequest("Missing \"firstName\".");
+            throw new BadRequest("Driver: Missing \"firstName\".");
         }
 
         // validate surname
         if (driver.getSurname() == null || driver.getSurname().isEmpty()) {
-            throw new BadRequest("Missing \"surname\".");
+            throw new BadRequest("Driver: Missing \"surname\".");
         }
     }
 }

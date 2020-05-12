@@ -7,9 +7,7 @@ import pl.spomex.bazodan.truck.Truck;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "shipment")
@@ -36,7 +34,7 @@ public class Shipment {
     private Truck truck;
 
     @OneToMany(mappedBy = "shipment")
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
 
     public static Shipment fromId(Integer id){
         Shipment shipment = new Shipment();
@@ -68,11 +66,11 @@ public class Shipment {
         this.driver = driver;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 

@@ -38,7 +38,7 @@ public class ShipmentService {
         return shipmentRepository.findById(id).orElse(null);
     }
 
-    public List<Shipment> getShipmentsByDirection(String direction){
+    public List<Shipment> getShipmentsByDirection(String direction) {
         return shipmentRepository.findByDirection(direction);
     }
 
@@ -53,9 +53,12 @@ public class ShipmentService {
 
     public Shipment updateShipment(Shipment shipment, Integer id) throws BadRequest {
         if (shipment.getId() == null || !shipment.getId().equals(id)) {
-            throw new BadRequest("ID in payload does not match the URL");
+            throw new BadRequest("Shipment: ID in payload does not match the URL");
         }
         validateShipment(shipment);
+
+        // Clear previous products
+        deleteShipmentProducts(shipmentRepository.findById(shipment.getId()).orElse(null));
 
         Shipment newShipment = shipmentRepository.save(shipment);
         saveShipmentProducts(newShipment);
@@ -75,6 +78,16 @@ public class ShipmentService {
         }
     }
 
+    private void deleteShipmentProducts(Shipment shipment) {
+        if (shipment != null) {
+            for (Product product : shipment.getProducts()) {
+                if (product.getId() != null) {
+                    productService.deleteProduct(product.getId());
+                }
+            }
+        }
+    }
+
     private void saveShipmentProducts(Shipment shipment) throws BadRequest {
         if (shipment != null) {
             for (Product product : shipment.getProducts()) {
@@ -87,33 +100,33 @@ public class ShipmentService {
 
     private void validateShipment(Shipment shipment) throws BadRequest {
         if (shipment == null) {
-            throw new BadRequest("Cannot construct Shipment with given information");
+            throw new BadRequest("Shipment: Cannot construct Shipment with given information");
         }
 
         // validate direction
         if (shipment.getDirection() == null || shipment.getDirection().isEmpty()) {
-            throw new BadRequest("Missing \"direction\".");
+            throw new BadRequest("Shipment: Missing \"direction\".");
         }
         if (!(shipment.getDirection().equals("in") || shipment.getDirection().equals("out"))) {
-            throw new BadRequest("Bad value in \"direction\". Expected \"in\" or \"out\".");
+            throw new BadRequest("Shipment: Bad value in \"direction\". Expected \"in\" or \"out\".");
         }
 
         // validate driver
         Driver shipmentDriver = shipment.getDriver();
         if (shipmentDriver == null || shipmentDriver.getId() == null) {
-            throw new BadRequest("Missing \"driver\".");
+            throw new BadRequest("Shipment: Missing \"driver\".");
         }
         if (driverService.getDriver(shipmentDriver.getId()) == null) {
-            throw new BadRequest("There's no such driver (ID=" + shipmentDriver.getId() + ").");
+            throw new BadRequest("Shipment: There's no such driver (ID=" + shipmentDriver.getId() + ").");
         }
 
         // validate truck
         Truck shipmentTruck = shipment.getTruck();
         if (shipmentTruck == null || shipmentTruck.getId() == null) {
-            throw new BadRequest("Missing \"truck\".");
+            throw new BadRequest("Shipment: Missing \"truck\".");
         }
         if (truckService.getTruck(shipmentTruck.getId()) == null) {
-            throw new BadRequest("There's no such truck (ID=" + shipmentTruck.getId() + ").");
+            throw new BadRequest("Shipment: There's no such truck (ID=" + shipmentTruck.getId() + ").");
         }
     }
 }
