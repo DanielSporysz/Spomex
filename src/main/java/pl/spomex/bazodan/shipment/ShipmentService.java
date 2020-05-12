@@ -57,9 +57,6 @@ public class ShipmentService {
         }
         validateShipment(shipment);
 
-        // Clear previous products
-        deleteShipmentProducts(shipmentRepository.findById(shipment.getId()).orElse(null));
-
         Shipment newShipment = shipmentRepository.save(shipment);
         saveShipmentProducts(newShipment);
 
@@ -75,16 +72,6 @@ public class ShipmentService {
             return id;
         } else {
             return null;
-        }
-    }
-
-    private void deleteShipmentProducts(Shipment shipment) {
-        if (shipment != null) {
-            for (Product product : shipment.getProducts()) {
-                if (product.getId() != null) {
-                    productService.deleteProduct(product.getId());
-                }
-            }
         }
     }
 
